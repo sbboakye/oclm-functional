@@ -11,7 +11,7 @@ lazy val doobieVersion      = "1.0.0-RC4"
 
 lazy val server = (project in file("server"))
   .settings(
-    name         := "oclm-functional",
+    name         := "server",
     scalaVersion := scala3Version,
     organization := org,
     libraryDependencies ++= Seq(
