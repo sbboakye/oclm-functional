@@ -16,6 +16,7 @@
 
 # target directory for build
 /build/
+/data/
 
 # other
 /out/
