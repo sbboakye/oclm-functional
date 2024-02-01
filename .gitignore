@@ -50,6 +50,7 @@
 local.sbt
 jitwatch.out
 *playground*
+/server/target/
 
 # Used by the restarr/restarrFull commands as target directories
 /build-restarr/

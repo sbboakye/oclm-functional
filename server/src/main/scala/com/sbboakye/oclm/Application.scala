@@ -15,6 +15,7 @@ import org.typelevel.log4cats.slf4j.Slf4jLogger
 import java.util.UUID
 
 import com.sbboakye.oclm.core.db.DbTransactor.*
+import com.sbboakye.oclm.core.db.Query.*
 
 object Application extends IOApp.Simple {
   given logger: Logger[IO] = Slf4jLogger.getLogger[IO]
@@ -25,16 +26,11 @@ object Application extends IOApp.Simple {
       .to[List]
       .transact(transactor)
 
-  def runQuery(
-      resource: Resource[IO, HikariTransactor[IO]]
-  ): IO[List[UUID]] =
-    resource.use(getIds)
-
   override def run: IO[Unit] =
     for {
       _        <- logger.info("and it begins")
       resource <- getTransactor[IO](namespace = "postgres")
-      result   <- runQuery(resource).attempt
+      result   <- runQuery(resource, getIds).attempt
       _        <- IO.println(result)
     } yield ()
 

@@ -7,7 +7,7 @@ import cats.effect.*
 import doobie.*
 import doobie.implicits.*
 import doobie.hikari.HikariTransactor
-import doobie.util.log.{ExecFailure, LogEvent, ProcessingFailure, Success}
+import doobie.util.log.{ExecFailure, ProcessingFailure, Success}
 
 import pureconfig.ConfigSource
 
