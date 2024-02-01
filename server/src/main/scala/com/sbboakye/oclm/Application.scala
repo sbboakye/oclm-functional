@@ -1,14 +1,41 @@
 package com.sbboakye.oclm
 
+import cats.effect.kernel.Resource
 import cats.effect.{IO, IOApp}
-import com.sbboakye.oclm.core.config.PostgresConfig
-import com.sbboakye.oclm.core.config.syntax.*
-import pureconfig.ConfigSource
+
+import doobie.*
+import doobie.implicits.*
+import doobie.postgres.*
+import doobie.postgres.implicits.*
+import doobie.hikari.HikariTransactor
+
+import org.typelevel.log4cats.Logger
+import org.typelevel.log4cats.slf4j.Slf4jLogger
+
+import java.util.UUID
+
+import com.sbboakye.oclm.core.db.DbTransactor.*
 
 object Application extends IOApp.Simple {
+  given logger: Logger[IO] = Slf4jLogger.getLogger[IO]
+
+  def getIds(transactor: HikariTransactor[IO]): IO[List[UUID]] =
+    sql"select member_id from member"
+      .queryWithLabel[UUID]("select only member ids")
+      .to[List]
+      .transact(transactor)
+
+  def runQuery(
+      resource: Resource[IO, HikariTransactor[IO]]
+  ): IO[List[UUID]] =
+    resource.use(getIds)
 
   override def run: IO[Unit] =
-    ConfigSource.default.at("postgres").loadConfig[IO, PostgresConfig].flatMap { config =>
-      IO.println(config)
-    }
+    for {
+      _        <- logger.info("and it begins")
+      resource <- getTransactor[IO](namespace = "postgres")
+      result   <- runQuery(resource).attempt
+      _        <- IO.println(result)
+    } yield ()
+
 }

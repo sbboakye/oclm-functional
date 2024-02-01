@@ -8,6 +8,7 @@ lazy val catsEffectsVersion = "3.5.3"
 lazy val logs4catsVersion   = "2.6.0"
 lazy val pureconfigVersion  = "0.17.5"
 lazy val doobieVersion      = "1.0.0-RC4"
+lazy val logbackVersion     = "1.4.14"
 
 lazy val server = (project in file("server"))
   .settings(
@@ -20,8 +21,10 @@ lazy val server = (project in file("server"))
       "org.tpolecat"          %% "doobie-core"     % doobieVersion,
       "org.tpolecat"          %% "doobie-hikari"   % doobieVersion,
       "org.tpolecat"          %% "doobie-postgres" % doobieVersion,
+      "org.typelevel"         %% "log4cats-core"   % logs4catsVersion,
       "org.typelevel"         %% "log4cats-slf4j"  % logs4catsVersion,
-      "com.github.pureconfig" %% "pureconfig-core" % pureconfigVersion
+      "com.github.pureconfig" %% "pureconfig-core" % pureconfigVersion,
+      "ch.qos.logback"         % "logback-classic" % logbackVersion
     ),
     Compile / mainClass := Some("com.sbboakye.oclm.Application")
   )
