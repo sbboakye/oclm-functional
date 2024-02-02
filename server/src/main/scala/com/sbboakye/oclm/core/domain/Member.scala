@@ -7,9 +7,9 @@ trait Member {
   def firstName: String
   def lastName: String
   def otherNames: Option[String]
-  def age: Integer
-  def gender: Option[String]
-  def availability: String
+  def age: Option[Int]
+  def gender: String
+  def availability: Boolean
   def student: Boolean
   def pioneer: Boolean
   def baptized: Boolean

@@ -13,22 +13,26 @@ import org.typelevel.log4cats.slf4j.Slf4jLogger
 import java.util.UUID
 import com.sbboakye.oclm.core.db.DbTransactor.*
 import com.sbboakye.oclm.core.db.Query
+import com.sbboakye.oclm.core.domain.{Brother, Brothers, Sister}
 
 object Application extends IOApp.Simple {
   given logger: Logger[IO] = Slf4jLogger.getLogger[IO]
 
-  def getIds(transactor: HikariTransactor[IO]): IO[List[UUID]] =
-    sql"select member_id from member"
-      .queryWithLabel[UUID]("select only member ids")
-      .to[List]
-      .transact(transactor)
+  val brothersQuery: Query[IO, Brother] = Query[IO, Brother]
+//  val sisterQuery: Query[IO, Sister]    = Query[IO, Sister]
 
   override def run: IO[Unit] =
     for {
       _        <- logger.info("and it begins")
       resource <- getTransactor[IO](namespace = "postgres")
-      result   <- Query[IO, List[UUID]].runQuery(resource, getIds).attempt
-      _        <- IO.println(result)
+//      result   <- brothersQuery.runQuery(resource, Brothers.make[IO].findAll).attempt
+      result <- brothersQuery
+        .runQuery(
+          resource,
+          Brothers.make[IO].findById(UUID.fromString("c5e71c9f-e85a-4c09-b545-6008771185ce"))
+        )
+        .attempt
+      _ <- IO.println(result)
     } yield ()
 
 }
