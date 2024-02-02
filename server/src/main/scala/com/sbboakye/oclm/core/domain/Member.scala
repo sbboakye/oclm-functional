@@ -1,6 +1,9 @@
 package com.sbboakye.oclm.core.domain
 
+import java.util.UUID
+
 trait Member {
+  def uuid: UUID
   def firstName: String
   def lastName: String
   def otherNames: Option[String]

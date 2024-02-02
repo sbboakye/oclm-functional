@@ -1,6 +1,9 @@
 package com.sbboakye.oclm.core.domain
 
+import java.util.UUID
+
 case class Brother(
+    uuid: UUID,
     firstName: String,
     lastName: String,
     otherNames: Option[String],
