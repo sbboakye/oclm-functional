@@ -1,18 +1,16 @@
 package com.sbboakye.oclm
 
+import cats.Id
 import cats.effect.{IO, IOApp}
-
 import doobie.*
 import doobie.implicits.*
 import doobie.postgres.*
 import doobie.postgres.implicits.*
 import doobie.hikari.HikariTransactor
-
 import org.typelevel.log4cats.Logger
 import org.typelevel.log4cats.slf4j.Slf4jLogger
 
 import java.util.UUID
-
 import com.sbboakye.oclm.core.db.DbTransactor.*
 import com.sbboakye.oclm.core.db.Query
 
